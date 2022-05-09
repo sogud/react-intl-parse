@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES6",
+    "lib": [
+      "ES6"
+    ],
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "noImplicitAny": false,
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "strict": true,
+    "types": [
+      "node",
+      "ava",
+      "node-xlsx"
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "react-intl-parse/*": [
+        "./src/*"
+      ]
+    },
+    "outDir": "./lib"
+  },
+  "include": [
+    "src/**/*",
+    "src/typings.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
