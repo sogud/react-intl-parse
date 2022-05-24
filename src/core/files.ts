@@ -2,30 +2,84 @@ import fs from "fs-extra"
 import path from "path"
 import ora from "ora"
 import loadConfigFile from "@/loadConfigFile"
+import xlsx from "node-xlsx"
+import { Buffer } from "buffer"
 
 const { formatKey, extract } = global.config
 const { output, input, languages, format, excludes, includes } = extract
 
 export const writeFiles = async (values: Array<Record<string, string>>) => {
-  let data = {}
+  const extractResult = {}
   values.forEach(({ id, defaultMessage }) => {
     const key = formatKey ? formatKey(id) : id
-    data[key] = defaultMessage || id
+    extractResult[key] = defaultMessage || id
   })
 
-  languages.forEach(async lang => {
+  const languagesResult = languages.map(async lang => {
     const file = path.resolve(output, `${lang}.${format}`)
     if (fs.existsSync(file)) {
       const [sourceFile] = await loadConfigFile(file)
-      data = Object.assign(data, sourceFile)
+      const result = { ...extractResult, ...sourceFile }
       fs.copyFileSync(file, `${file}.bak`)
+      return { lang, result, file }
     }
-    let formatData = JSON.stringify(data, null, 2)
-    if (format === "ts" || format === "js") {
-      formatData = `export default ${formatData}`
-    }
-    fs.outputFile(file, formatData)
+    return { file, lang, result: extractResult }
   })
+  Promise.all(languagesResult).then(values => {
+    // 找到最多key的语言
+    const max = {
+      length: 0,
+      lang: ""
+    }
+    values
+      .map(({ lang, result, file }) => {
+        const length = Object.keys(result).length
+        if (length > max.length) {
+          max.length = length
+          max.lang = lang
+        }
+        return { lang, result, file }
+      })
+      .map(({ lang, result, file }) => {
+        // 如果最多的语言不是当前语言，则把当前语言的内容放到最多语言的文件中
+        if (lang !== max.lang) {
+          result = { ...values.find(({ lang: l }) => l === max.lang).result, ...result }
+        }
+        return { lang, result, file }
+      })
+      .map(({ lang, result, file }) => {
+        // 写入文件
+        let formatData = JSON.stringify(result, null, 2)
+        if (format === "ts" || format === "js") {
+          formatData = `export default ${formatData}`
+        }
+        fs.outputFile(file, formatData)
+        return { lang, result, file }
+      })
+
+    outputExcel(values)
+  })
+}
+
+function outputExcel(values) {
+  const options = {
+    "!cols": [{ wch: 30 }, { wch: 35 }, { wch: 35 }]
+  }
+
+  const header = values.map(({ lang }) => lang)
+  const data = [["key", ...header]]
+
+  Object.keys(values?.[0]?.result).forEach(key => {
+    const row = [key]
+    values.forEach(({ lang, result }, i) => {
+      row.push(values[i].result[key])
+    })
+    data.push(row)
+  })
+
+  const buffer = xlsx.build([{ name: "test", data, options }]) // Returns a buffer
+  const file = path.resolve(output, `languages.xlsx`)
+  fs.outputFile(file, Buffer.from(buffer))
 }
 
 function walkSyncRead(currentDirPath, callback, excludes: string[] = []) {
