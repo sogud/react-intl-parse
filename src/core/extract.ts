@@ -23,7 +23,7 @@ export const collectValues = (fileName: string) => {
         const { name } = node.callee ?? {}
         if (additionalFunctionNames.includes(name)) {
           const getValue = node => {
-            if (additionalFunctionAst && additionalFunctionAst(node)) {
+            if (additionalFunctionAst) {
               return additionalFunctionAst(node)
             }
             const { properties = [] } = node.arguments?.[0] ?? {}

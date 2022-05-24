@@ -15,6 +15,7 @@ if (!validVersion) {
 
 export default {
   input: "src/index.ts",
+  // input: "main.ts",
   output: {
     dir: "lib",
     format: "cjs",
@@ -38,10 +39,9 @@ export default {
     "ora",
     "shelljs",
     "undici",
-    "zuoy-key",
     "@babel/parser",
     "ast-types",
-    "winston",
+    "winston"
   ],
   plugins: [
     resolve({ preferBuiltins: false }),
