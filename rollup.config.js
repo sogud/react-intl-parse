@@ -24,7 +24,8 @@ export default {
     freeze: false,
     chunkFileNames: "[name].js",
     entryFileNames: "[name].js",
-    generatedCode: "es2015"
+    generatedCode: "es2015",
+    sourcemap: true
   },
   external: [
     "rollup",
