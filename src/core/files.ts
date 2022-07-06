@@ -135,7 +135,7 @@ export const wirteExcelFileToJson = (data: any[]) => {
     const result = {}
     data.forEach(row => {
       const key = row[0]
-      const value = row[index]
+      const value = row[index + 1]
       result[key] = value
     })
     let formatData = JSON.stringify(result, null, 2)
