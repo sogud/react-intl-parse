@@ -5,7 +5,7 @@ import loadConfigFile from "@/loadConfigFile"
 import xlsx from "node-xlsx"
 import { Buffer } from "buffer"
 
-const { formatKey, extract } = global.config
+const { formatKey, extract, compile } = global.config
 const { output, input, languages, format, excludes, includes } = extract
 
 export const writeFiles = async (values: Array<Record<string, string>>) => {
@@ -110,4 +110,40 @@ export const readFiles = (): string[] => {
   )
   spinner.succeed("read files succeed")
   return resust
+}
+
+export const readExcelFiles = (dirPath): any[] => {
+  const spinner = ora("read excel files...").start()
+  const filePath = path.join(dirPath)
+
+  const [sheet1] = xlsx.parse(filePath)
+
+  const { data: sheetData } = sheet1
+
+  spinner.succeed("read excel files succeed")
+
+  return sheetData
+}
+
+export const wirteExcelFileToJson = (data: any[]) => {
+  const spinner = ora("write excel files to json...").start()
+  const head = data.shift()
+  // remove key
+  head.shift()
+  head.forEach((lang, index) => {
+    const file = path.join(compile.output, `${lang}.${compile.format}`)
+    const result = {}
+    data.forEach(row => {
+      const key = row[0]
+      const value = row[index]
+      result[key] = value
+    })
+    let formatData = JSON.stringify(result, null, 2)
+    if (format === "ts" || format === "js") {
+      formatData = `export default ${formatData}`
+    }
+    fs.outputFile(file, formatData)
+  })
+
+  spinner.succeed("write excel files to json succeed")
 }

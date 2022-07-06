@@ -19,6 +19,14 @@ const main = async () => {
       await extract()
     })
 
+  program
+    .command("compile [path]")
+    .description("extract...")
+    .action(async (path: string) => {
+      const { default: compile } = await import("../core/compile")
+      await compile()
+    })
+
   await program.parseAsync(process.argv)
 }
 
