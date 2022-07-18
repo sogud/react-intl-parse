@@ -8,7 +8,8 @@
   },
   "scripts": {
     "watch": "rollup -c --watch",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "release": "release-it"
   },
   "dependencies": {
     "@babel/parser": "^7.16.5",
@@ -43,6 +44,7 @@
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^14.14.35",
     "@types/node-xlsx": "^0.15.3",
+    "release-it": "^15.5.0",
     "rimraf": "^3.0.2",
     "semver": "^7.3.5",
     "ts-node": "^10.4.0",
