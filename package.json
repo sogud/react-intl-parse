@@ -26,7 +26,7 @@
     "open": "^8.2.1",
     "ora": "^5.4.1",
     "pkg-updater": "^1.0.4",
-    "react-intl-parse": "^1.0.0",
+    "react-intl-parse": "^1.0.1",
     "rollup": "^2.61.1",
     "shelljs": "^0.8.4",
     "tablemark": "^3.0.0",
