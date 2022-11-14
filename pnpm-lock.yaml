@@ -25,7 +25,6 @@ specifiers:
   open: ^8.2.1
   ora: ^5.4.1
   pkg-updater: ^1.0.4
-  react-intl-parse: ^1.0.0
   release-it: ^15.5.0
   rimraf: ^3.0.2
   rollup: ^2.61.1
