@@ -1,14 +1,14 @@
-export const defaultUserConfig = {
-  localLanguage: "zh",
-  defaultContent: value => value.toLocaleString(),
+export default {
+  localLanguage: 'zh',
+  defaultContent: (value) => value.toLocaleString(),
   // formatKey: value => value.toLocaleString(),
-  additionalFunctionNames: ["t", "$t"],
+  additionalFunctionNames: ['t', '$t'],
   extract: {
-    input: "./src",
-    output: "./locales",
-    includes: [".ts", ".tsx", ".js", ".jsx"],
-    excludes: [".umi"],
-    format: "json",
-    languages: ["zh-CN", "en-US"]
+    input: './src',
+    output: './locales',
+    includes: ['.ts', '.tsx', '.js', '.jsx'],
+    excludes: ['.umi'],
+    format: 'json',
+    languages: ['zh-CN', 'en-US']
   }
-} as NodeJS.Global["config"]
+};

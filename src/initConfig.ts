@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import log from '@/log';
-import { deepAssign } from '@/utils';
-import { defaultUserConfig } from './languages.config';
+import { merge } from 'lodash';
+import defaultLanguagesConfig from './languages.config';
 import loadConfigFile from '@/loadConfigFile';
 export const basePath = process.cwd();
 export const pkgBasePath = path.resolve(__dirname, '../');
@@ -17,7 +17,7 @@ const userConfigPath = path.join(basePath, 'languages.config.js');
 
 const getUserConfig = async () => {
   if (!fs.existsSync(userConfigPath)) {
-    return defaultUserConfig;
+    return defaultLanguagesConfig;
   }
   let userConfig = {};
   try {
@@ -31,10 +31,7 @@ const getUserConfig = async () => {
       detail: error.message
     });
   }
-  const combineConfig = deepAssign<NodeJS.Global['config']>(
-    defaultUserConfig,
-    userConfig
-  );
+  const combineConfig = merge(defaultLanguagesConfig, userConfig);
   return combineConfig;
 };
 

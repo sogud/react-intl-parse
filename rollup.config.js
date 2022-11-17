@@ -29,17 +29,12 @@ export default {
   },
   external: [
     "rollup",
-    "pkg-updater",
-    "chalk",
     "cli-progress",
+    "chalk",
     "commander",
-    "inquirer",
-    "mz-modules",
     "node-xlsx",
     "open",
     "ora",
-    "shelljs",
-    "undici",
     "@babel/parser",
     "ast-types",
     "winston"

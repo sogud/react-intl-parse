@@ -24,7 +24,6 @@
     "strict": true,
     "types": [
       "node",
-      "ava",
       "node-xlsx"
     ],
     "paths": {
